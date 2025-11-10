@@ -119,16 +119,24 @@ fun GeoQuizScreen() {
                         currentIndex++ // Переходим к следующему вопросу
                         isAnswered = false // Сбрасываем состояние ответа
                     } else {
-
+                        Toast.makeText(context, "Your final score: $score/${questionBank.size}", Toast.LENGTH_LONG).show()
                     }
                 },
-                enabled = isAnswered, // <--- Кнопка активна только после ответа
+                enabled = isAnswered && !isLastQuestion, // <--- Кнопка активна только после ответа
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF673AB7)),
                 modifier = Modifier
                     .align(Alignment.End) // Выравнивание по правому краю
             ) {
                 Text("NEXT")
                 Icon(Icons.Default.KeyboardArrowRight, contentDescription = "Next")
+            }
+
+            if (isLastQuestion && isAnswered) {
+                Text(
+                    text = "Quiz Finished! Final Score: $score/${questionBank.size}",
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
             }
         }
     }

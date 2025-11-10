@@ -10,6 +10,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -107,6 +110,25 @@ fun GeoQuizScreen() {
                 } else {
                     Spacer(modifier = Modifier.weight(1f)) // Занимаем место
                 }
+            }
+
+            // Кнопка NEXT
+            Button(
+                onClick = {
+                    if (!isLastQuestion) {
+                        currentIndex++ // Переходим к следующему вопросу
+                        isAnswered = false // Сбрасываем состояние ответа
+                    } else {
+
+                    }
+                },
+                enabled = isAnswered, // <--- Кнопка активна только после ответа
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF673AB7)),
+                modifier = Modifier
+                    .align(Alignment.End) // Выравнивание по правому краю
+            ) {
+                Text("NEXT")
+                Icon(Icons.Default.KeyboardArrowRight, contentDescription = "Next")
             }
         }
     }

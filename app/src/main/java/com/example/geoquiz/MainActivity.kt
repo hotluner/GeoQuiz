@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +44,19 @@ fun GeoQuizScreen() {
     val isLastQuestion = currentIndex == questionBank.size - 1
     val context = LocalContext.current
 
+    fun checkAnswer(userAnswer: Boolean) {
+        if (!isAnswered) {
+            isAnswered = true // Блокируем кнопки, если не отвечено
+            val isCorrect = userAnswer == currentQuestion.answerTrue
+            if (isCorrect) {
+                score++
+                Toast.makeText(context, "Correct!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Incorrect!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("GeoQuiz") }) // Верхняя панель
@@ -62,6 +76,38 @@ fun GeoQuizScreen() {
                 text = currentQuestion.textResId,
                 modifier = Modifier.padding(bottom = 32.dp)
             )
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // TRUE Button
+                if (!isAnswered) { // <--- Делаем кнопку невидимой после ответа
+                    Button(
+                        onClick = { checkAnswer(true) },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF673AB7)) // Фиолетовый цвет
+                    ) {
+                        Text("TRUE")
+                    }
+                } else {
+                    Spacer(modifier = Modifier.weight(1f)) // Занимаем место
+                }
+
+                // FALSE Button
+                if (!isAnswered) { // <--- Делаем кнопку невидимой после ответа
+                    Button(
+                        onClick = { checkAnswer(false) },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF673AB7)) // Фиолетовый цвет
+                    ) {
+                        Text("FALSE")
+                    }
+                } else {
+                    Spacer(modifier = Modifier.weight(1f)) // Занимаем место
+                }
+            }
         }
     }
 }
